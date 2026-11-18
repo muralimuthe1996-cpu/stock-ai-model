@@ -1,5 +1,6 @@
 # 📈 Live AI Stock Scoring & Holding Guide (100% to 5%)
-**शेवटचे लाइव्ह अपडेट (IST):** 18-Nov-2026 12:54 PM
+**शेवटचे लाइव्ह अपडेट (IST):** 18-Nov-2026 01:03 PM  
+**डेटा सोर्स:** Yahoo Finance (Near-Live)
 
 ### 🎯 100% Probability Group
 *सध्या या गटात कोणताही शेअर नाही.*
