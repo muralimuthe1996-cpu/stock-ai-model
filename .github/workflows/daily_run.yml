@@ -2,7 +2,6 @@ name: Live & Daily Stock AI Prediction
 
 on:
   schedule:
-    # सोमवार ते शुक्रवार सकाळी १०:००, दुपारी १:०० आणि संध्याकाळी ५:०० वाजता (IST) आपोआप चालेल
     - cron: '30 4,7,11 * * 1-5'
   workflow_dispatch:
 
@@ -22,9 +21,14 @@ jobs:
           python-version: '3.10'
 
       - name: Install libraries
-        run: pip install yfinance pandas numpy scikit-learn ta pytz
+        run: pip install yfinance pandas numpy scikit-learn ta pytz smartapi-python pyotp logzero websocket-client requests
 
       - name: Run Live AI Model
+        env:
+          ANGEL_API_KEY: ${{ secrets.ANGEL_API_KEY }}
+          ANGEL_CLIENT_ID: ${{ secrets.ANGEL_CLIENT_ID }}
+          ANGEL_PASSWORD: ${{ secrets.ANGEL_PASSWORD }}
+          ANGEL_TOTP_SECRET: ${{ secrets.ANGEL_TOTP_SECRET }}
         run: python main.py
 
       - name: Save Live Results to GitHub
