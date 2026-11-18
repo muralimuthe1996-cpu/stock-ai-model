@@ -1,28 +1,36 @@
-name: Daily Stock AI Prediction
+name: Live & Daily Stock AI Prediction
 
 on:
   schedule:
-    # दररोज भारतीय वेळेनुसार संध्याकाळी ६:०० वाजता (UTC 12:30) रन होईल
-    - cron: '30 12 * * 1-5'
-  workflow_dispatch: # तुम्ही स्वतः कधीही बटण दाबून चेक करू शकता
+    # सोमवार ते शुक्रवार सकाळी १०:००, दुपारी १:०० आणि संध्याकाळी ५:०० वाजता (IST) आपोआप चालेल
+    - cron: '30 4,7,11 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
       - name: Install libraries
-        run: pip install yfinance pandas scikit-learn ta requests
+        run: pip install yfinance pandas numpy scikit-learn ta pytz
 
-      - name: Run AI Model
-        env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Run Live AI Model
         run: python main.py
+
+      - name: Save Live Results to GitHub
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md
+          git commit -m "Live Stock AI Update" || exit 0
+          git push
